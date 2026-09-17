@@ -1,4 +1,4 @@
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin, Phone } from "lucide-react";
 import { useLanguage } from "../lib/i18n";
 
 export default function Footer() {
@@ -32,7 +32,10 @@ export default function Footer() {
     },
   ];
 
-  const socials = ["Facebook", "Instagram", "X / Twitter", "LinkedIn"];
+  const socials = [
+    { name: "GitHub", href: "https://github.com/robinrossi237-ai/WASTETRACK/tree/main/wastetrack-site", icon: Github },
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/tambat-robin-rossi-de-kini-21080b425", icon: Linkedin },
+  ];
 
   return (
     <footer className="border-t border-slate-100 bg-white">
@@ -49,7 +52,11 @@ export default function Footer() {
             <div className="mt-5 space-y-2">
               <p className="flex items-center gap-2 text-sm text-slate-500">
                 <Mail className="h-4 w-4 text-brand-600" />
-                contact@wastetrack.app
+                robinrossi237@gmail.com
+              </p>
+              <p className="flex items-center gap-2 text-sm text-slate-500">
+                <Phone className="h-4 w-4 text-brand-600" />
+                +237 6 53 46 81 23
               </p>
               <p className="flex items-center gap-2 text-sm text-slate-500">
                 <MapPin className="h-4 w-4 text-brand-600" />
@@ -78,12 +85,14 @@ export default function Footer() {
             <div className="mt-4 flex flex-wrap gap-2">
               {socials.map((social) => (
                 <a
-                  key={social}
-                  href="#"
-                  onClick={(event) => event.preventDefault()}
-                  className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700"
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700"
                 >
-                  {social}
+                  <social.icon className="h-3.5 w-3.5" />
+                  {social.name}
                 </a>
               ))}
             </div>
@@ -95,7 +104,7 @@ export default function Footer() {
             © {new Date().getFullYear()} WasteTrack. {t("footer.rights")}
           </p>
           <a
-            href="https://wa.me/237690000000"
+            href="https://wa.me/237653468123"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-brand-700"
