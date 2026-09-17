@@ -11,7 +11,7 @@ services:
     runtime: node
     rootDir: ecowaste-backend
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node dist/utils/migrate.js && node dist/server.js
     healthCheckPath: /api/health
     autoDeploy: true
