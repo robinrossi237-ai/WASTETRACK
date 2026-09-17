@@ -14,7 +14,7 @@ export default function PhoneScreenshots({ lang }: PhoneScreenshotsProps) {
   const { t } = useLanguage();
 
   const screenshots: Screenshot[] = [
-    { src: "/screenshots/home.png", alt: t("download.screenshots.alt") + " - Accueil" },
+    { src: "/screenshots/home.jpg", alt: t("download.screenshots.alt") + " - Accueil" },
     // { src: "/screenshots/map.png", alt: t("download.screenshots.alt") + " - Carte & suivi" },
     // { src: "/screenshots/pickup.png", alt: t("download.screenshots.alt") + " - Demande ramassage" },
     // { src: "/screenshots/profile.png", alt: t("download.screenshots.alt") + " - Profil & points" },
