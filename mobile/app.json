@@ -26,7 +26,12 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-notifications",
+      [
+        "expo-notifications",
+        {
+          "googleServicesFile": "$GOOGLE_SERVICES_JSON"
+        }
+      ],
       "expo-web-browser",
       "expo-secure-store",
       [
@@ -41,6 +46,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8f74bd40-f9de-4a13-b0ba-7adb7110409f"
+      }
+    },
+    "owner": "tambat_robin"
   }
 }

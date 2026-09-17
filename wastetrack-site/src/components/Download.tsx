@@ -27,36 +27,35 @@ export default function Download() {
             <p className="mt-4 text-lg leading-relaxed text-white/75">{t("dl.subtitle")}</p>
           </Reveal>
 
-          <Reveal delay={120}>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#"
-                onClick={(event) => event.preventDefault()}
-                className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white">
-                  <DownloadIcon className="h-5 w-5" />
-                </span>
-                <span className="text-left">
-                  <span className="block text-[11px] font-medium text-slate-500">{t("dl.iosBadge")}</span>
-                  <span className="block text-base font-bold">{t("dl.iosName")}</span>
-                </span>
-              </a>
-              <a
-                href="#"
-                onClick={(event) => event.preventDefault()}
-                className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-white">
-                  <DownloadIcon className="h-5 w-5" />
-                </span>
-                <span className="text-left">
-                  <span className="block text-[11px] font-medium text-slate-500">{t("dl.iosBadge")}</span>
-                  <span className="block text-base font-bold">{t("dl.androidName")}</span>
-                </span>
-              </a>
-            </div>
-          </Reveal>
+<Reveal delay={120}>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <a
+                  href="#"
+                  onClick={(event) => event.preventDefault()}
+                  className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white">
+                    <DownloadIcon className="h-5 w-5" />
+                  </span>
+                  <span className="text-left">
+                    <span className="block text-[11px] font-medium text-slate-500">{t("dl.iosBadge")}</span>
+                    <span className="block text-base font-bold">{t("dl.iosName")}</span>
+                  </span>
+                </a>
+                <a
+                  href="https://expo.dev/artifacts/eas/Wd3EZlcW9myq2YvUME1n6nYwMMnCNsCBQ0zWOvEgzQU.apk"
+                  className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-white">
+                    <DownloadIcon className="h-5 w-5" />
+                  </span>
+                  <span className="text-left">
+                    <span className="block text-[11px] font-medium text-slate-500">{t("dl.iosBadge")}</span>
+                    <span className="block text-base font-bold">{t("dl.androidName")}</span>
+                  </span>
+                </a>
+              </div>
+            </Reveal>
 
           <Reveal delay={220}>
             <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 transition duration-300 hover:bg-white/10 sm:flex-row">
