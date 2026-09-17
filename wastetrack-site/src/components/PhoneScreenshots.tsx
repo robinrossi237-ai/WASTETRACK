@@ -15,12 +15,12 @@ export default function PhoneScreenshots({ lang }: PhoneScreenshotsProps) {
 
   const screenshots: Screenshot[] = [
     { src: "/screenshots/home.png", alt: t("download.screenshots.alt") + " - Accueil" },
-    { src: "/screenshots/map.png", alt: t("download.screenshots.alt") + " - Carte & suivi" },
-    { src: "/screenshots/pickup.png", alt: t("download.screenshots.alt") + " - Demande ramassage" },
-    { src: "/screenshots/profile.png", alt: t("download.screenshots.alt") + " - Profil & points" },
+    // { src: "/screenshots/map.png", alt: t("download.screenshots.alt") + " - Carte & suivi" },
+    // { src: "/screenshots/pickup.png", alt: t("download.screenshots.alt") + " - Demande ramassage" },
+    // { src: "/screenshots/profile.png", alt: t("download.screenshots.alt") + " - Profil & points" },
   ];
 
-  const hasRealScreenshots = false; // Mettre à true quand les captures sont ajoutées dans /public/screenshots/
+  const hasRealScreenshots = true; // Mettre à true quand les captures sont ajoutées dans /public/screenshots/
 
   if (hasRealScreenshots) {
     return (
@@ -44,6 +44,7 @@ export default function PhoneScreenshots({ lang }: PhoneScreenshotsProps) {
           <p className="text-[11px] text-slate-500">{t("hero.mockup.pointsDone")}</p>
         </div>
 
+        {hasRealScreenshots && screenshots.length > 1 && (
         <div className="mt-6 flex justify-center gap-2">
           {screenshots.slice(1).map((shot, i) => (
             <button
@@ -57,6 +58,7 @@ export default function PhoneScreenshots({ lang }: PhoneScreenshotsProps) {
             </button>
           ))}
         </div>
+      )}
       </div>
     );
   }
