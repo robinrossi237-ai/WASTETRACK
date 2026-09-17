@@ -1,0 +1,27 @@
+{
+  "name": "wastetrack",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "mobile",
+    "ecowaste-backend"
+  ],
+  "scripts": {
+    "mobile": "npm run --workspace wastetrack-mobile",
+    "backend": "npm run --workspace ecowaste-backend",
+    "dashboard": "npm run --prefix ecowaste-dashboard",
+    "site": "npm run --prefix wastetrack-site",
+    "typecheck": "npm run --workspace wastetrack-mobile typecheck && npm run --workspace ecowaste-backend typecheck",
+    "lint": "npm run --workspace wastetrack-mobile lint && npm run --workspace ecowaste-backend lint",
+    "test": "npm run --workspace ecowaste-backend test",
+    "test:integration": "npm run --workspace ecowaste-backend test:integration"
+  },
+  "devDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-reanimated": "4.5.1",
+    "react-native-worklets": "0.10.1",
+    "expo-router": "~57.0.21"
+  }
+}

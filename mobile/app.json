@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "WasteTrack",
+    "slug": "WasteTrack",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/WasteTrack.png",
+    "scheme": "ecowaste",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ecowaste"
+    },
+    "android": {
+      "package": "com.ecowaste",
+      "adaptiveIcon": {
+        "backgroundColor": "#0D9668",
+        "foregroundImage": "./assets/images/WasteTrack-adaptive-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/WasteTrack.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-notifications",
+      "expo-web-browser",
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/WasteTrack-splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#0D9668"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

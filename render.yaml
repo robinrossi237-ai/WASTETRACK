@@ -1,0 +1,32 @@
+# Render Blueprint — WasteTrack Backend
+# Free plan: the web service sleeps after ~15 min without traffic (cold start on
+# first request). Database is external (Neon free tier) — set DATABASE_URL to
+# the *pooled* connection string and DATABASE_SSL=true.
+#
+# Deploy: Render Dashboard -> "New +" -> "Blueprint" -> connect this repository.
+# Migration (idempotent) runs automatically at startup via startCommand.
+services:
+  - type: web
+    name: wastetrack-api
+    runtime: node
+    rootDir: ecowaste-backend
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/utils/migrate.js && node dist/server.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_SSL
+        value: "true"
+      - key: PICKUP_OVERDUE_SWEEP_MS
+        value: "60000"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: EXPO_PUSH_ACCESS_TOKEN
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false

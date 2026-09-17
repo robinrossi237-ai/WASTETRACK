@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (typecheck, unit, integration)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ecowaste_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready -U postgres
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecowaste_test
+      JWT_SECRET: ci-test-secret
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install workspace dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run --workspace ecowaste-backend typecheck
+      - name: Lint
+        run: npm run --workspace ecowaste-backend lint
+      - name: Format check
+        run: npm run --workspace ecowaste-backend format:check
+      - name: Unit tests
+        run: npm run --workspace ecowaste-backend test
+      - name: Apply migrations
+        run: npm run --workspace ecowaste-backend migrate
+      - name: Integration tests
+        run: npm run --workspace ecowaste-backend test:integration
+
+  mobile:
+    name: Mobile (typecheck, lint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install workspace dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run --workspace wastetrack-mobile typecheck
+      - name: Lint
+        run: npm run --workspace wastetrack-mobile lint
+
+  dashboard:
+    name: Dashboard (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ecowaste-dashboard/package-lock.json
+      - name: Install dashboard dependencies
+        working-directory: ecowaste-dashboard
+        run: npm ci
+      - name: Build
+        working-directory: ecowaste-dashboard
+        run: npm run build
