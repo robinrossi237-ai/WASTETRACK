@@ -15,6 +15,10 @@ import {
   residentCreateFeedback,
   residentGetPickupQuota,
 } from '../controllers/residentController';
+import {
+  residentCreateSubscriptionRequest,
+  residentListMySubscriptionRequests,
+} from '../controllers/subscriptionRequestsController';
 
 const router = Router();
 
@@ -34,6 +38,9 @@ router.patch('/pickups/:id/cancel', residentCancelPickup);
 router.post('/pickups/:id/confirm-completion', residentConfirmPickupCompletion);
 
 router.get('/rewards', residentListMyRewards);
+
+router.get('/subscription-requests', residentListMySubscriptionRequests);
+router.post('/subscription-requests', residentCreateSubscriptionRequest);
 
 router.post('/feedback', residentCreateFeedback);
 

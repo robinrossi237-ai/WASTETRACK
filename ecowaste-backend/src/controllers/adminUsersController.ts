@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { asyncHandler } from '../utils/asyncHandler';
 import { COLLECTOR_VERIFICATION_STATUSES, USER_ROLES } from '../models/user';
-import { SUBSCRIPTION_PLANS } from '../models/plan';
+import { getPlanById } from '../services/planService';
 import {
   deleteUserAndRelatedData,
   listCollectorApplications,
@@ -144,13 +144,21 @@ const setPlanParamsSchema = z.object({
 });
 
 const setPlanBodySchema = z.object({
-  plan: z.enum(SUBSCRIPTION_PLANS),
+  plan: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .regex(/^[a-z0-9-]{2,32}$/, 'Unknown plan.'),
 });
 
 export const adminSetUserPlan: RequestHandler = asyncHandler(async (req, res) => {
   const params = setPlanParamsSchema.parse(req.params);
   const body = setPlanBodySchema.parse(req.body);
 
-  const updatedUser = await setSubscriptionPlan(params.id, body.plan);
+  const plan = await getPlanById(body.plan);
+  if (!plan) {
+    throw new HttpError('Plan not found.', 404);
+  }
+  const updatedUser = await setSubscriptionPlan(params.id, plan.id);
   res.status(200).json({ success: true, user: updatedUser });
 });

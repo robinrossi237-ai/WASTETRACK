@@ -33,6 +33,18 @@ import { adminListAuditLogs } from '../controllers/adminAuditController';
 import { adminBroadcastNotification } from '../controllers/adminNotificationsController';
 import { adminListFeedback } from '../controllers/adminFeedbackController';
 import { adminListCollectorRanking } from '../controllers/adminCollectorRankingController';
+import {
+  adminCreatePlan,
+  adminDeletePlan,
+  adminGetPlan,
+  adminListPlans,
+  adminUpdatePlan,
+} from '../controllers/plansController';
+import {
+  adminListSubscriptionRequests,
+  adminReviewSubscriptionRequest,
+} from '../controllers/subscriptionRequestsController';
+import { adminUpdatePaymentSettings } from '../controllers/pricingController';
 
 const router = Router();
 
@@ -72,5 +84,16 @@ router.delete('/content/:id', adminDeleteContent);
 
 router.get('/audit', adminListAuditLogs);
 router.post('/notifications/broadcast', adminBroadcastNotification);
+
+router.get('/plans', adminListPlans);
+router.post('/plans', adminCreatePlan);
+router.get('/plans/:id', adminGetPlan);
+router.patch('/plans/:id', adminUpdatePlan);
+router.delete('/plans/:id', adminDeletePlan);
+
+router.get('/subscription-requests', adminListSubscriptionRequests);
+router.patch('/subscription-requests/:id/review', adminReviewSubscriptionRequest);
+
+router.patch('/payment-settings', adminUpdatePaymentSettings);
 
 export default router;
