@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { login, register, updateMe } from '../controllers/authController';
+import { changePassword, login, register, updateMe } from '../controllers/authController';
 import { requireAuth } from '../middlewares/auth';
 import { authRateLimiter } from '../middlewares/rateLimiter';
 
@@ -15,5 +15,6 @@ router.get('/me', requireAuth, (req, res) => {
   });
 });
 router.patch('/me', requireAuth, updateMe);
+router.patch('/password', authRateLimiter, requireAuth, changePassword);
 
 export default router;

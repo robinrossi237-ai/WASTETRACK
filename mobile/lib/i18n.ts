@@ -1253,6 +1253,17 @@ const translations: Record<LanguageCode, TranslationMap> = {
     "View requests": "Voir les demandes",
     "Your {plan} request is under review.": "Votre demande {plan} est en cours de validation.",
     "Add payment screenshot": "Ajouter une capture de paiement",
+    "Change password": "Changer le mot de passe",
+    "Current password": "Mot de passe actuel",
+    "New password (min. 8 characters)": "Nouveau mot de passe (min. 8 caracteres)",
+    "Confirm new password": "Confirmer le nouveau mot de passe",
+    "Please enter your current password.": "Veuillez saisir votre mot de passe actuel.",
+    "New password must be at least 8 characters.": "Le nouveau mot de passe doit comporter au moins 8 caracteres.",
+    "New passwords do not match.": "Les nouveaux mots de passe ne correspondent pas.",
+    "New password must be different from the current one.": "Le nouveau mot de passe doit etre different de l'actuel.",
+    "Password changed successfully.": "Mot de passe modifie avec succes.",
+    "Current password is incorrect.": "Le mot de passe actuel est incorrect.",
+    "Could not change password. Please try again.": "Impossible de modifier le mot de passe. Reessayez.",
   },
 };
 

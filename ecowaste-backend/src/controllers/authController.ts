@@ -10,6 +10,7 @@ import {
   createUser,
   findUserForLoginByEmail,
   updateUserLastLogin,
+  updateUserPassword,
   updateUserProfile,
 } from '../services/userService';
 import { publishRealtimeEvent } from '../services/realtimeService';
@@ -221,4 +222,23 @@ export const updateMe: RequestHandler = asyncHandler(async (req, res) => {
       collector_exit_location_capture_enabled: user.collector_exit_location_capture_enabled,
     },
   });
+});
+
+const changePasswordSchema = z.object({
+  current_password: z.string().min(1).max(72),
+  new_password: z.string().min(8).max(72),
+});
+
+export const changePassword: RequestHandler = asyncHandler(async (req, res) => {
+  const userId = req.user?.id;
+  if (!userId) throw new HttpError('Unauthorized', 401);
+
+  const body = changePasswordSchema.parse(req.body ?? {});
+  if (body.current_password === body.new_password) {
+    throw new HttpError('New password must be different from the current one.', 400);
+  }
+
+  await updateUserPassword(userId, body.current_password, body.new_password);
+
+  res.status(200).json({ success: true });
 });

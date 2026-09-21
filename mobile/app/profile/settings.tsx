@@ -268,6 +268,19 @@ export default function ProfileSettingsScreen() {
         </View>
 
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Pressable
+            style={({ pressed }) => [styles.infoRow, pressed && { opacity: 0.7 }]}
+            onPress={() => router.push("/profile/change-password")}
+          >
+            <Ionicons name="lock-closed-outline" size={20} color={colors.textSecondary} />
+            <AppText variant="label" color={colors.text} style={styles.infoText}>
+              {t("Change password")}
+            </AppText>
+            <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+          </Pressable>
+        </View>
+
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.cardHeader}>
             <Ionicons name="color-palette-outline" size={18} color={colors.textSecondary} />
             <AppText variant="label" color={colors.text}>{t("Theme")}</AppText>

@@ -1,4 +1,7 @@
+import bcrypt from 'bcrypt';
+
 import { query } from '../config/db';
+import { env } from '../config/env';
 import { HttpError } from '../middlewares/errorHandler';
 import type { CollectorVerificationStatus, UserRole } from '../models/user';
 
@@ -371,4 +374,25 @@ export const setSubscriptionPlan = async (
   }
 
   return user;
+};
+
+export const updateUserPassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> => {
+  const result = await query<{ password_hash: string }>(
+    `SELECT password_hash FROM users WHERE id = $1 LIMIT 1`,
+    [userId],
+  );
+  const row = result.rows[0];
+  if (!row) {
+    throw new HttpError('User not found', 404);
+  }
+  const valid = await bcrypt.compare(currentPassword, row.password_hash);
+  if (!valid) {
+    throw new HttpError('Current password is incorrect.', 400, 'INVALID_CURRENT_PASSWORD');
+  }
+  const hash = await bcrypt.hash(newPassword, env.BCRYPT_SALT_ROUNDS);
+  await query(`UPDATE users SET password_hash = $2 WHERE id = $1`, [userId, hash]);
 };
