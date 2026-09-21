@@ -142,15 +142,15 @@ export default function NotificationCenterScreen() {
     }
   }, [toast, t]);
 
-  const { id: userId, role: userRole } = user ?? {};
+  const { id: userId } = user ?? {};
 
   useEffect(() => {
-    if (!userId || userRole !== "resident") return;
+    if (!userId) return;
     void loadNotifications();
-  }, [userId, userRole, loadNotifications]);
+  }, [userId, loadNotifications]);
 
   useRealtimeRefresh({
-    enabled: !!user && user.role === "resident" && isFocused,
+    enabled: !!user && isFocused,
     onRefresh: loadNotifications,
     pollMs: 30_000,
     eventTypes: [
@@ -220,10 +220,6 @@ export default function NotificationCenterScreen() {
 
   if (!user) {
     return <Redirect href="/(public)/get-started" />;
-  }
-
-  if (user.role !== "resident") {
-    return <Redirect href="/(tabs)" />;
   }
 
   return (
