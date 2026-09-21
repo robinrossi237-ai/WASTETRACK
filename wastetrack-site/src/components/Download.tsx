@@ -43,7 +43,7 @@ export default function Download() {
                   </span>
                 </a>
                 <a
-                  href="https://expo.dev/artifacts/eas/mZkVd9l94siAajiXqQfLtld6LgkW-yBVp2YTYaTbFqs.apk"
+                  href="https://expo.dev/artifacts/eas/N1jJ9yy13dZ1linkju02pun7QKqQBhEdSoMkmRHTt3I.apk"
                   className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
                 >
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-white">
