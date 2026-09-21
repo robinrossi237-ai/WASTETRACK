@@ -10,6 +10,7 @@ import { getPlanMonthlyLimit } from '../models/plan';
 import { getPlanById } from './planService';
 import { setSubscriptionPlan } from './userService';
 import { dispatchNotificationCreated } from './notificationsService';
+import { publishRealtimeEvent } from './realtimeService';
 
 export const getUserPlan = async (userId: string): Promise<string> => {
   const result = await query<{ subscription_plan: string }>(
@@ -183,7 +184,26 @@ export const createSubscriptionRequest = async (input: {
     `,
     [input.userId, plan.id, input.paymentMethod, plan.price_amount, plan.currency, proofUrl],
   );
-  return toRequestRow(result.rows[0]);
+  const created = toRequestRow(result.rows[0]);
+
+  try {
+    publishRealtimeEvent({
+      type: 'subscription.request.created',
+      roles: ['admin'],
+      payload: {
+        request_id: created.id,
+        user_id: created.user_id,
+        plan_id: created.plan_id,
+        payment_method: created.payment_method,
+        amount: created.amount,
+        status: created.status,
+      },
+    });
+  } catch (err) {
+    console.error('Failed to publish subscription request event', err);
+  }
+
+  return created;
 };
 
 export const listMySubscriptionRequests = async (userId: string): Promise<SubscriptionRequestRow[]> => {

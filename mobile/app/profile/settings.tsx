@@ -25,7 +25,7 @@ const TIME_WINDOWS = [
   { value: "10:00", labelKey: "10 AM - 12 PM" },
   { value: "14:00", labelKey: "2 PM - 4 PM" },
 ];
-const WASTETRACK_SUPPORT_PHONE = "237652605329";
+const WASTETRACK_SUPPORT_PHONE = "237653468123";
 
 export default function ProfileSettingsScreen() {
   const { colors, preference, setThemeMode, setManualTheme } = useTheme();

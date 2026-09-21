@@ -1,6 +1,9 @@
-import { Smartphone, Download as DownloadIcon, QrCode, Recycle } from "lucide-react";
+import { Smartphone, Download as DownloadIcon, Recycle } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useLanguage } from "../lib/i18n";
 import Reveal from "./Reveal";
+
+const ANDROID_APK_URL = "https://expo.dev/artifacts/eas/N1jJ9yy13dZ1linkju02pun7QKqQBhEdSoMkmRHTt3I.apk";
 
 export default function Download() {
   const { t } = useLanguage();
@@ -43,7 +46,7 @@ export default function Download() {
                   </span>
                 </a>
                 <a
-                  href="https://expo.dev/artifacts/eas/N1jJ9yy13dZ1linkju02pun7QKqQBhEdSoMkmRHTt3I.apk"
+                  href={ANDROID_APK_URL}
                   className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-3.5 text-slate-900 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-xl"
                 >
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-white">
@@ -59,8 +62,8 @@ export default function Download() {
 
           <Reveal delay={220}>
             <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 transition duration-300 hover:bg-white/10 sm:flex-row">
-              <div className="flex h-24 w-24 items-center justify-center rounded-xl bg-white transition-transform duration-300 hover:scale-105">
-                <QrCode className="h-16 w-16 text-slate-900" />
+              <div className="flex h-24 w-24 items-center justify-center rounded-xl bg-white p-1.5 transition-transform duration-300 hover:scale-105">
+                <QRCodeSVG value={ANDROID_APK_URL} size={84} level="M" />
               </div>
               <div className="text-center sm:text-left">
                 <p className="flex items-center justify-center gap-2 text-sm font-bold text-white sm:justify-start">

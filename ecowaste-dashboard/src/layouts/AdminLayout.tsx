@@ -19,7 +19,8 @@ const EVENT_TAB_MAP: Record<string, string[]> = {
   'notification.read': ['/admin/notifications'],
   'user.login': ['/admin/users'],
   'collector.application.submitted': ['/admin/users'],
-  'collector.application.reviewed': ['/admin/users']
+  'collector.application.reviewed': ['/admin/users'],
+  'subscription.request.created': ['/admin/subscription-requests']
 };
 
 const toSidebarTabPath = (pathname: string): string => {
@@ -153,6 +154,9 @@ export default function AdminLayout() {
         }
         if (event.type === 'collector.application.submitted') {
           toast.success('New collector application pending validation');
+        }
+        if (event.type === 'subscription.request.created') {
+          toast.success('New subscription request pending validation');
         }
         if (event.type === 'collector.application.reviewed') {
           toast.success('Collector application review updated');
