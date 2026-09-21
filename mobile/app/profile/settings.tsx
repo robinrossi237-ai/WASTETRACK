@@ -17,6 +17,8 @@ import {
   unregisterSavedPushTokenFromBackend,
 } from "@/lib/push-notifications";
 import * as storage from "@/lib/storage";
+import { fetchPricing, listMySubscriptionRequests } from "@/lib/subscription";
+import type { SubscriptionRequestDetails } from "@/lib/types";
 
 const TIME_WINDOWS = [
   { value: "08:00", labelKey: "8 AM - 10 AM" },
@@ -33,6 +35,30 @@ export default function ProfileSettingsScreen() {
   const [isPushUpdating, setIsPushUpdating] = useState(false);
 
   const userId = user?.id;
+  const [planDisplayName, setPlanDisplayName] = useState<string | null>(null);
+  const [pendingRequest, setPendingRequest] = useState<SubscriptionRequestDetails | null>(null);
+
+  useEffect(() => {
+    if (!user || user.role !== "resident") return;
+    let isMounted = true;
+    void (async () => {
+      try {
+        const [{ plans }, myRequests] = await Promise.all([
+          fetchPricing(),
+          listMySubscriptionRequests(),
+        ]);
+        if (!isMounted) return;
+        const match = plans.find((item) => item.id === user.subscriptionPlan);
+        setPlanDisplayName(match ? match.name : null);
+        setPendingRequest(myRequests.find((item) => item.status === "pending") ?? null);
+      } catch {
+        // Silent: plan card falls back to stored values.
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   useEffect(() => {
     let isMounted = true;
@@ -114,11 +140,12 @@ export default function ProfileSettingsScreen() {
   }
 
   const currentPlanLabel =
-    user.subscriptionPlan === "free"
+    planDisplayName ??
+    (user.subscriptionPlan === "free"
       ? t("Free (Essentiel)")
       : user.subscriptionPlan === "plus"
         ? t("Plus")
-        : t("Pro");
+        : t("Pro"));
 
   const renderRadio = (
     label: string,
@@ -193,7 +220,7 @@ export default function ProfileSettingsScreen() {
               </AppText>
             </View>
           </View>
-          {user.subscriptionPlan === "free" && pickupQuota && !pickupQuota.isUnlimited && (
+          {pickupQuota && !pickupQuota.isUnlimited && (
             <>
               <View style={[styles.infoDivider, { backgroundColor: colors.border }]} />
               <View style={styles.infoRow}>
@@ -217,6 +244,27 @@ export default function ProfileSettingsScreen() {
             </AppText>
             <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
           </Pressable>
+          <View style={[styles.infoDivider, { backgroundColor: colors.border }]} />
+          <Pressable
+            style={({ pressed }) => [styles.infoRow, pressed && { opacity: 0.7 }]}
+            onPress={() => router.push("/profile/subscription/requests")}
+          >
+            <AppText variant="label" color={Colors.primary} style={styles.infoText}>
+              {t("View requests")}
+            </AppText>
+            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
+          </Pressable>
+          {pendingRequest && (
+            <>
+              <View style={[styles.infoDivider, { backgroundColor: colors.border }]} />
+              <View style={styles.infoRow}>
+                <Ionicons name="time-outline" size={18} color={Colors.accent} />
+                <AppText color={colors.text} style={styles.infoText}>
+                  {t("Your {plan} request is under review.", { plan: pendingRequest.plan_id })}
+                </AppText>
+              </View>
+            </>
+          )}
         </View>
 
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

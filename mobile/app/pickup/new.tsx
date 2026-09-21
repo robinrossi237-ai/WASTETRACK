@@ -782,7 +782,7 @@ export default function NewPickupScreen() {
           </View>
         </View>
 
-        {pickupQuota && user?.subscriptionPlan !== "plus" && user?.subscriptionPlan !== "pro" && (
+        {pickupQuota && !pickupQuota.isUnlimited && (
           <View
             style={[
               styles.infoCard,

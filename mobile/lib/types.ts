@@ -1,6 +1,7 @@
 export type UserRole = 'resident' | 'collector' | 'admin';
 export type CollectorVerificationStatus = 'pending' | 'approved' | 'rejected';
-export type SubscriptionPlan = 'free' | 'plus' | 'pro';
+/** Subscription plan id (dynamic slugs from the plans table, e.g. 'free', 'plus', 'pro'). */
+export type SubscriptionPlan = string;
 
 export interface User {
   id: string;
@@ -28,6 +29,41 @@ export interface PickupQuota {
   used: number;
   remaining: number;
   isUnlimited: boolean;
+}
+
+export interface PlanDetails {
+  id: string;
+  name: string;
+  price_amount: number;
+  currency: string;
+  /** Monthly pickup allowance. `null` means unlimited. */
+  monthly_limit: number | null;
+  features: string[];
+  is_active: boolean;
+}
+
+export type PaymentMethodId = 'mtn' | 'orange';
+
+export interface PaymentMethodDetails {
+  id: PaymentMethodId;
+  name: string;
+  merchant_number: string;
+  ussd_template: string;
+}
+
+export type SubscriptionRequestStatus = 'pending' | 'approved' | 'rejected';
+
+export interface SubscriptionRequestDetails {
+  id: string;
+  user_id: string;
+  plan_id: string;
+  payment_method: PaymentMethodId;
+  amount: number;
+  currency: string;
+  proof_url: string | null;
+  status: SubscriptionRequestStatus;
+  admin_note: string | null;
+  created_at: string;
 }
 
 export interface CollectorApplicationSubmission {

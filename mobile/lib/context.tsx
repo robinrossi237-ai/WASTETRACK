@@ -100,7 +100,7 @@ const isWasteType = (value: string): value is WasteType =>
   (['household', 'plastic', 'organic', 'electronic', 'hazardous', 'metal', 'mixed'] as const).includes(value as WasteType);
 
 const isSubscriptionPlan = (value: string | undefined | null): value is SubscriptionPlan =>
-  (['free', 'plus', 'pro'] as const).includes(value as SubscriptionPlan);
+  typeof value === 'string' && /^[a-z0-9-]{1,64}$/i.test(value.trim());
 
 const isReportType = (value: string): value is Report['type'] =>
   (['illegal_dumping', 'overflowing_bin', 'other'] as const).includes(value as Report['type']);
