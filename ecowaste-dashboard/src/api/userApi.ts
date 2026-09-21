@@ -3,7 +3,7 @@ import type { UserRole } from './authApi';
 
 export type CollectorVerificationStatus = 'pending' | 'approved' | 'rejected';
 
-export type SubscriptionPlan = 'free' | 'plus' | 'pro';
+export type SubscriptionPlan = string;
 
 export type User = {
   id: string;

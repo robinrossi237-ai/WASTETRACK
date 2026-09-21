@@ -15,6 +15,8 @@ import AdminMapPage from './pages/admin/AdminMapPage';
 import AdminNotificationsPage from './pages/admin/AdminNotificationsPage';
 import AdminAuditPage from './pages/admin/AdminAuditPage';
 import AdminCollectorRankingPage from './pages/admin/AdminCollectorRankingPage';
+import AdminPlansPage from './pages/admin/AdminPlansPage';
+import AdminSubscriptionRequestsPage from './pages/admin/AdminSubscriptionRequestsPage';
 
 import NotFoundPage from './pages/NotFoundPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
@@ -53,6 +55,8 @@ export default function App() {
         <Route path="pickups" element={<AdminPickupsPage />} />
         <Route path="assignments" element={<AdminAssignmentsPage />} />
         <Route path="rewards" element={<AdminRewardsPage />} />
+        <Route path="plans" element={<AdminPlansPage />} />
+        <Route path="subscription-requests" element={<AdminSubscriptionRequestsPage />} />
         <Route path="user-rankings" element={<AdminCollectorRankingPage />} />
         <Route path="collector-ranking" element={<Navigate to="/admin/user-rankings" replace />} />
         <Route path="notifications" element={<AdminNotificationsPage />} />

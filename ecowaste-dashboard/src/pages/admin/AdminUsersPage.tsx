@@ -13,13 +13,20 @@ import StatusBadge from '@/components/StatusBadge';
 import StatusChip from '@/components/StatusChip';
 import { getApiErrorMessage } from '@/api/axios';
 import { userApi, type CollectorApplication, type SubscriptionPlan, type User } from '@/api/userApi';
+import { subscriptionsApi, type Plan } from '@/api/subscriptionsApi';
 import { PowerIcon, SearchIcon, TagIcon, TrashIcon, UsersIcon } from '@/components/icons';
 
-const PLAN_OPTIONS: Array<{ value: SubscriptionPlan; label: string; description: string }> = [
+const FALLBACK_PLAN_OPTIONS: Array<{ value: SubscriptionPlan; label: string; description: string }> = [
   { value: 'free', label: 'Free', description: 'Essentiel – 3 pickups per month' },
   { value: 'plus', label: 'Plus', description: 'Unlimited pickups' },
   { value: 'pro', label: 'Pro', description: 'Unlimited pickups + priority' }
 ];
+
+const describePlan = (plan: Plan): string => {
+  const price = plan.price_amount === 0 ? 'Free' : `${plan.price_amount.toLocaleString('fr-FR')} ${plan.currency}`;
+  const limit = plan.monthly_limit === null ? 'Unlimited pickups' : `${plan.monthly_limit} pickups / month`;
+  return `${price} · ${limit}`;
+};
 
 const formatRelativeLogin = (value: string | null): string => {
   if (!value) return 'Never';
@@ -74,6 +81,20 @@ export default function AdminUsersPage() {
   const [planModalTarget, setPlanModalTarget] = useState<User | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan>('free');
   const [isUpdatingPlan, setIsUpdatingPlan] = useState<boolean>(false);
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  const planOptions = useMemo(
+    () =>
+      plans.length > 0
+        ? plans.map((plan) => ({ value: plan.id, label: plan.name, description: describePlan(plan) }))
+        : FALLBACK_PLAN_OPTIONS,
+    [plans]
+  );
+
+  const planNameOf = useMemo(() => {
+    const map = new Map(plans.map((plan) => [plan.id, plan.name]));
+    return (planId: string) => map.get(planId) ?? planId.charAt(0).toUpperCase() + planId.slice(1);
+  }, [plans]);
 
   const load = async (override?: { q?: string; applicationStatus?: 'pending' | 'approved' | 'rejected' }) => {
     setIsLoading(true);
@@ -81,16 +102,18 @@ export default function AdminUsersPage() {
     try {
       const qValue = override?.q ?? q;
       const applicationStatusValue = override?.applicationStatus ?? applicationStatus;
-      const [users, applications, pendingApps, approvedApps, rejectedApps] = await Promise.all([
+      const [users, applications, pendingApps, approvedApps, rejectedApps, plans] = await Promise.all([
         userApi.listUsers({
           q: qValue.trim().length > 0 ? qValue.trim() : undefined
         }),
         userApi.listCollectorApplications({ status: applicationStatusValue }),
         userApi.listCollectorApplications({ status: 'pending' }),
         userApi.listCollectorApplications({ status: 'approved' }),
-        userApi.listCollectorApplications({ status: 'rejected' })
+        userApi.listCollectorApplications({ status: 'rejected' }),
+        subscriptionsApi.listPlans().catch(() => [] as Plan[])
       ]);
       setRows(users);
+      setPlans(plans);
       setCollectorApplications(applications);
       setApplicationCounts({
         pending: pendingApps.length,
@@ -127,8 +150,8 @@ export default function AdminUsersPage() {
         header: 'Plan',
         cell: (u) => (
           <StatusChip
-            label={u.subscription_plan === 'plus' ? 'Plus' : u.subscription_plan === 'pro' ? 'Pro' : 'Free'}
-            tone={u.subscription_plan === 'plus' ? 'info' : u.subscription_plan === 'pro' ? 'success' : 'neutral'}
+            label={planNameOf(u.subscription_plan)}
+            tone={u.subscription_plan === 'free' ? 'neutral' : 'success'}
           />
         )
       },
@@ -192,7 +215,7 @@ export default function AdminUsersPage() {
         )
       }
     ],
-    []
+    [planNameOf]
   );
 
   const visibleRows = useMemo(() => rows.filter((user) => user.role !== 'admin'), [rows]);
@@ -659,7 +682,7 @@ export default function AdminUsersPage() {
             </p>
           ) : null}
           <div className="space-y-2">
-            {PLAN_OPTIONS.map((option) => {
+            {planOptions.map((option) => {
               const isSelected = selectedPlan === option.value;
               return (
                 <button

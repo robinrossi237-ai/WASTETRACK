@@ -7,7 +7,7 @@ import Topbar from '@/components/Topbar';
 import { connectRealtimeStream } from '@/api/realtimeApi';
 import { useAuth } from '@/auth/AuthContext';
 import { userApi, type AdminStats } from '@/api/userApi';
-import { ClipboardIcon, DashboardIcon, GiftIcon, MapIcon, MegaphoneIcon, ReportIcon, ShieldIcon, TruckIcon, TrophyIcon, UsersIcon } from '@/components/icons';
+import { ClipboardIcon, DashboardIcon, GiftIcon, MapIcon, MegaphoneIcon, ReportIcon, ShieldIcon, TagIcon, TruckIcon, TrophyIcon, UsersIcon } from '@/components/icons';
 import { ADMIN_REALTIME_REFRESH_EVENT } from '@/hooks/useAdminRealtimeRefresh';
 
 const EVENT_TAB_MAP: Record<string, string[]> = {
@@ -183,6 +183,8 @@ export default function AdminLayout() {
           { label: 'User Rankings', to: '/admin/user-rankings', icon: <TrophyIcon className="h-5 w-5" />, hasUpdate: hasTabUpdate('/admin/user-rankings') },
           { label: 'Map', to: '/admin/map', icon: <MapIcon className="h-5 w-5" /> },
           { label: 'Rewards', to: '/admin/rewards', icon: <GiftIcon className="h-5 w-5" />, hasUpdate: hasTabUpdate('/admin/rewards') },
+          { label: 'Plans', to: '/admin/plans', icon: <TagIcon className="h-5 w-5" />, hasUpdate: hasTabUpdate('/admin/plans') },
+          { label: 'Subscriptions', to: '/admin/subscription-requests', icon: <ClipboardIcon className="h-5 w-5" />, hasUpdate: hasTabUpdate('/admin/subscription-requests') },
           { label: 'Notifications', to: '/admin/notifications', icon: <MegaphoneIcon className="h-5 w-5" />, hasUpdate: hasTabUpdate('/admin/notifications') },
           { label: 'Audit Log', to: '/admin/audit', icon: <ShieldIcon className="h-5 w-5" /> }
         ]}
