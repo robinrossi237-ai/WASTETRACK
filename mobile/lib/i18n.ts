@@ -1264,6 +1264,11 @@ const translations: Record<LanguageCode, TranslationMap> = {
     "Password changed successfully.": "Mot de passe modifie avec succes.",
     "Current password is incorrect.": "Le mot de passe actuel est incorrect.",
     "Could not change password. Please try again.": "Impossible de modifier le mot de passe. Reessayez.",
+    "Enable notifications": "Activer les notifications",
+    "Get pickup updates instantly on your phone.": "Recevez les actus de vos ramassages instantanement sur votre telephone.",
+    "Notifications enabled.": "Notifications activees.",
+    "Allow notifications in system settings to receive pickup updates.": "Autorisez les notifications dans les reglages systeme pour recevoir les actus.",
+    "Open Settings": "Ouvrir les reglages",
   },
 };
 

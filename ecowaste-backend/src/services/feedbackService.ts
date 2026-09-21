@@ -33,6 +33,55 @@ export const createFeedback = async (
   return row;
 };
 
+export type PublicTestimonial = {
+  author: string;
+  role: string | null;
+  area: string | null;
+  rating: number;
+  message: string;
+  created_at: string;
+};
+
+const toDisplayName = (name: string | null): string => {
+  const parts = (name ?? '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'Anonymous';
+  if (parts.length === 1) return parts[0];
+  return `${parts[0]} ${parts[1].charAt(0).toUpperCase()}.`;
+};
+
+export const listPublicTestimonials = async (limit = 6): Promise<PublicTestimonial[]> => {
+  const safeLimit = Number.isInteger(limit) && limit > 0 && limit <= 20 ? limit : 6;
+  const res = await query<{
+    name: string | null;
+    role: string | null;
+    area: string | null;
+    rating: number;
+    message: string;
+    created_at: string;
+  }>(
+    `
+      SELECT u.name AS name, u.role AS role, u.area AS area,
+             f.rating AS rating, f.message AS message, f.created_at AS created_at
+      FROM feedback f
+      JOIN users u ON u.id = f.user_id
+      WHERE f.rating >= 4
+        AND f.message IS NOT NULL
+        AND length(trim(f.message)) >= 10
+      ORDER BY f.created_at DESC
+      LIMIT $1
+    `,
+    [safeLimit]
+  );
+  return res.rows.map((row) => ({
+    author: toDisplayName(row.name),
+    role: row.role,
+    area: row.area,
+    rating: row.rating,
+    message: row.message.trim(),
+    created_at: String(row.created_at),
+  }));
+};
+
 export const listFeedback = async (): Promise<AdminFeedbackRow[]> => {
   const res = await query<AdminFeedbackRow>(
     `

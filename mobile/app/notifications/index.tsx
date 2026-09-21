@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "@/constants/colors";
 import { AppText } from "@/components/ui/AppText";
+import { PushEnableBanner } from "@/components/PushEnableBanner";
 import { fonts, fontSizes, radius, spacing } from "@/constants/theme";
 import { apiRequest } from "@/lib/api-client";
 import { useApp } from "@/lib/context";
@@ -234,6 +235,10 @@ export default function NotificationCenterScreen() {
         </AppText>
       </View>
 
+      <View style={styles.bannerWrap}>
+        <PushEnableBanner />
+      </View>
+
       <View style={styles.content}>
         <View style={[styles.statsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.statCell}>
@@ -403,6 +408,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { paddingHorizontal: 20, paddingBottom: spacing.md },
   subtitle: { marginTop: 6 },
+  bannerWrap: { paddingHorizontal: 20, paddingBottom: spacing.md },
   content: { paddingHorizontal: 20, gap: 10 },
   statsCard: {
     borderRadius: radius.xl,
