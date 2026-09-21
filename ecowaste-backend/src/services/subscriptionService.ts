@@ -115,6 +115,8 @@ const toRequestRow = (row: Record<string, unknown>): SubscriptionRequestRow => (
   reviewed_at: row.reviewed_at === null || row.reviewed_at === undefined ? null : String(row.reviewed_at),
   created_at: String(row.created_at ?? ''),
   updated_at: String(row.updated_at ?? ''),
+  user_name: row.user_name === null || row.user_name === undefined ? null : String(row.user_name),
+  user_email: row.user_email === null || row.user_email === undefined ? null : String(row.user_email),
 });
 
 export const createSubscriptionRequest = async (input: {
@@ -194,9 +196,13 @@ export const listMySubscriptionRequests = async (userId: string): Promise<Subscr
 
 export const listSubscriptionRequests = async (status?: SubscriptionRequestStatus): Promise<SubscriptionRequestRow[]> => {
   const result = await query(
-    `SELECT ${REQUEST_COLUMNS} FROM subscription_requests ${
-      status ? 'WHERE status = $1' : ''
-    } ORDER BY created_at DESC LIMIT 200`,
+    `SELECT sr.id, sr.user_id, sr.plan_id, sr.payment_method, sr.amount, sr.currency,
+            sr.proof_url, sr.status, sr.admin_note, sr.reviewed_by_admin_id, sr.reviewed_at,
+            sr.created_at, sr.updated_at, u.name AS user_name, u.email AS user_email
+     FROM subscription_requests sr
+     LEFT JOIN users u ON u.id = sr.user_id ${
+      status ? 'WHERE sr.status = $1' : ''
+    } ORDER BY sr.created_at DESC LIMIT 200`,
     status ? [status] : [],
   );
   return result.rows.map(toRequestRow);

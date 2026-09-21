@@ -44,7 +44,7 @@ import {
   adminListSubscriptionRequests,
   adminReviewSubscriptionRequest,
 } from '../controllers/subscriptionRequestsController';
-import { adminUpdatePaymentSettings } from '../controllers/pricingController';
+import { adminGetPaymentSettings, adminUpdatePaymentSettings } from '../controllers/pricingController';
 
 const router = Router();
 
@@ -95,5 +95,6 @@ router.get('/subscription-requests', adminListSubscriptionRequests);
 router.patch('/subscription-requests/:id/review', adminReviewSubscriptionRequest);
 
 router.patch('/payment-settings', adminUpdatePaymentSettings);
+router.get('/payment-settings', adminGetPaymentSettings);
 
 export default router;

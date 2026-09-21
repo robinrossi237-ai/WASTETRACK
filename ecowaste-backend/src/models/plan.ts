@@ -56,6 +56,8 @@ export type SubscriptionRequestRow = {
   reviewed_at: string | null;
   created_at: string;
   updated_at: string;
+  user_name?: string | null;
+  user_email?: string | null;
 };
 
 export type PaymentMethodInfo = {

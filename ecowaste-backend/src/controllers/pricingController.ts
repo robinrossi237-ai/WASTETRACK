@@ -34,8 +34,23 @@ const updatePaymentSettingsBodySchema = z.object({
   whatsapp_message_template: z.string().trim().min(5).max(1000).optional(),
 });
 
-export const adminUpdatePaymentSettings: RequestHandler = asyncHandler(async (req, res) => {
-  const adminId = req.user?.id;
+export const adminGetPaymentSettings: RequestHandler = asyncHandler(async (req, res) => {
+  const settings = await getPricingSettings('default');
+  const paymentMethods = await getPaymentMethods('default');
+  res.status(200).json({
+    success: true,
+    settings: {
+      whatsapp_message_template: settings.whatsapp_message_template,
+      mtn_merchant_number: settings.mtn_merchant_number,
+      orange_merchant_number: settings.orange_merchant_number,
+      mtn_ussd_template: settings.mtn_ussd_template,
+      orange_ussd_template: settings.orange_ussd_template,
+    },
+    payment_methods: paymentMethods,
+  });
+});
+
+export const adminUpdatePaymentSettings: RequestHandler = asyncHandler(async (req, res) => {  const adminId = req.user?.id;
   if (!adminId) throw new HttpError('Unauthorized', 401);
 
   const body = updatePaymentSettingsBodySchema.parse(req.body ?? {});
