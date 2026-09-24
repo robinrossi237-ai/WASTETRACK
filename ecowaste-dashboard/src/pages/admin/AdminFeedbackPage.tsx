@@ -93,6 +93,16 @@ export default function AdminFeedbackPage() {
     setToDate('');
   };
 
+  const onToggleVisibility = async (item: Feedback) => {
+    try {
+      const updated = await feedbackApi.setVisibility(item.id, !item.is_visible);
+      setRows((prev) => prev.map((row) => (row.id === updated.id ? updated : row)));
+      toast.success(updated.is_visible ? 'Feedback published on the site.' : 'Feedback hidden from the site.');
+    } catch (err) {
+      toast.error(getApiErrorMessage(err));
+    }
+  };
+
   const columns: Column<Feedback>[] = useMemo(
     () => [
       {
@@ -135,9 +145,22 @@ export default function AdminFeedbackPage() {
       },
       { header: 'Created', cell: (f) => new Date(f.created_at).toLocaleString() },
       {
+        header: 'On site',
+        cell: (f) => (
+          <StatusChip label={f.is_visible ? 'Published' : 'Hidden'} tone={f.is_visible ? 'success' : 'neutral'} />
+        )
+      },
+      {
         header: 'Actions',
         cell: (f) => (
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="btn btn-ghost px-3 py-1 text-xs"
+              onClick={() => void onToggleVisibility(f)}
+            >
+              {f.is_visible ? 'Hide from site' : 'Publish on site'}
+            </button>
             <button
               type="button"
               className="btn btn-ghost px-3 py-1 text-xs"
@@ -149,7 +172,7 @@ export default function AdminFeedbackPage() {
         )
       }
     ],
-    [copyToClipboard]
+    [copyToClipboard, onToggleVisibility]
   );
 
   return (

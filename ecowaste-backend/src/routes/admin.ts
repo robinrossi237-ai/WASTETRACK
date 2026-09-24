@@ -31,7 +31,7 @@ import {
 } from '../controllers/adminContentController';
 import { adminListAuditLogs } from '../controllers/adminAuditController';
 import { adminBroadcastNotification } from '../controllers/adminNotificationsController';
-import { adminListFeedback } from '../controllers/adminFeedbackController';
+import { adminListFeedback, adminSetFeedbackVisibility } from '../controllers/adminFeedbackController';
 import { adminListCollectorRanking } from '../controllers/adminCollectorRankingController';
 import {
   adminCreatePlan,
@@ -75,6 +75,7 @@ router.get('/rewards', adminListRewards);
 router.post('/rewards', adminGrantReward);
 
 router.get('/feedback', adminListFeedback);
+router.patch('/feedback/:id/visibility', adminSetFeedbackVisibility);
 router.get('/collector-ranking', adminListCollectorRanking);
 
 router.get('/content', adminListContent);
