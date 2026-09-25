@@ -21,13 +21,13 @@ import { useTheme } from "@/lib/theme-context";
 import { useToast } from "@/lib/toast-context";
 import { useLanguage } from "@/lib/language-context";
 import { useApp } from "@/lib/context";
-import LeafletMap, {
+import NativeMap, {
   LeafletMapCommand,
   LeafletMarker,
   LeafletPolyline,
   LeafletPolylinePoint,
   LeafletUserLocation,
-} from "@/components/LeafletMap";
+} from "@/components/NativeMap";
 import { collectorApi, CollectorAssignment, CollectorWasteReport } from "@/lib/collector-api";
 import { locationApi } from "@/lib/location-api";
 import {
@@ -794,7 +794,7 @@ export default function CollectorMapScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <LeafletMap
+      <NativeMap
         markers={markers}
         userLocation={mapUserLocation}
         polylines={polylines}

@@ -18,13 +18,13 @@ import Colors from "@/constants/colors";
 import { AppText } from "@/components/ui/AppText";
 import { fonts, fontSizes, radius, spacing } from "@/constants/theme";
 import FloatingInput from "@/components/FloatingInput";
-import LeafletMap, {
+import NativeMap, {
   LeafletMapCommand,
   LeafletMarker,
   LeafletPolyline,
   LeafletPolylinePoint,
   LeafletUserLocation,
-} from "@/components/LeafletMap";
+} from "@/components/NativeMap";
 import { apiRequest } from "@/lib/api-client";
 import { useApp } from "@/lib/context";
 import { locationApi, type CollectorLocation } from "@/lib/location-api";
@@ -923,7 +923,7 @@ export default function ResidentMapScreen() {
 
   return (
     <View style={styles.container}>
-      <LeafletMap
+      <NativeMap
         markers={markers}
         userLocation={mapUserLocation}
         polylines={polylines}

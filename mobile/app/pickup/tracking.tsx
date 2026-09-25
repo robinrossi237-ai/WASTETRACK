@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/colors";
 import { AppText } from "@/components/ui/AppText";
 import { fonts, radius, spacing } from "@/constants/theme";
-import LeafletMap from "@/components/LeafletMap";
+import NativeMap from "@/components/NativeMap";
 import LocationTrackingIndicator from "@/components/LocationTrackingIndicator";
 import { apiRequest } from "@/lib/api-client";
 import { useApp } from "@/lib/context";
@@ -270,7 +270,7 @@ export default function PickupTrackingScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.mapWrap}>
-        <LeafletMap
+        <NativeMap
           markers={markers}
           polylines={polylines}
           focusPoints={collectorPoint ? [collectorPoint, pickupPoint] : [pickupPoint]}
