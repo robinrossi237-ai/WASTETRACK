@@ -120,7 +120,7 @@ export default function Navbar() {
               {t("nav.download")}
             </a>
             <a
-              href="https://wa.me/237690000000"
+              href="https://wa.me/237653468123"
               target="_blank"
               rel="noreferrer"
               onMouseEnter={() => setWhatsappHover(true)}
