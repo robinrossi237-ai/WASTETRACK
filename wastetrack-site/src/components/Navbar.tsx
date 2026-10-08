@@ -49,7 +49,23 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open ]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-white/90 shadow-soft backdrop-blur" : "bg-transparent"
@@ -159,26 +175,78 @@ export default function Navbar() {
         </div>
       </div>
 
-      {open && (
-        <div className="border-t border-slate-100 bg-white shadow-soft lg:hidden">
-          <nav className="container-page flex flex-col gap-1 py-4">
-            {NAV_LINK_KEYS.map((link) => (
+    </header>
+
+    {/* Mobile drawer */}
+    <div
+      className={`fixed inset-0 z-[60] lg:hidden ${open ? "" : "pointer-events-none"}`}
+      aria-hidden={!open}
+    >
+      <div
+        className={`absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={() => setOpen(false)}
+      />
+      <aside
+        className={`absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+        role="dialog"
+        aria-label={t("nav.menu.open")}
+      >
+        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-4">
+          <span className="flex items-center gap-2">
+            <img src="/wastetrack-logo.png" alt="WasteTrack" className="h-8 w-8 rounded-lg object-contain" />
+            <span className="text-base font-bold tracking-tight text-slate-900">
+              Waste<span className="text-brand-500">Track</span>
+            </span>
+          </span>
+          <button
+            onClick={() => setOpen(false)}
+            className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100"
+            aria-label={t("nav.menu.close")}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
+          {NAV_LINK_KEYS.map((link) => {
+            const isActive = active === link.href.slice(1);
+            return (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
+                className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                  isActive
+                    ? "bg-brand-50 text-brand-700"
+                    : "text-slate-700 hover:bg-slate-50"
+                }`}
               >
                 {t(link.key)}
+                <span className={`h-1.5 w-1.5 rounded-full ${isActive ? "bg-brand-500" : "bg-transparent"}`} />
               </a>
-            ))}
-            <a href="#telechargement" onClick={() => setOpen(false)} className="btn-primary mt-3">
-              <Download className="h-4 w-4" />
-              {t("nav.download")}
-            </a>
-          </nav>
+            );
+          })}
+        </nav>
+        <div className="space-y-2 border-t border-slate-100 p-4">
+          <a href="#telechargement" onClick={() => setOpen(false)} className="btn-primary w-full">
+            <Download className="h-4 w-4" />
+            {t("nav.download")}
+          </a>
+          <a
+            href="https://wa.me/237653468123"
+            target="_blank"
+            rel="noreferrer"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-brand-300 hover:text-brand-700"
+          >
+            <Send className="h-4 w-4" />
+            {t("nav.whatsapp")}
+          </a>
         </div>
-      )}
-    </header>
+      </aside>
+    </div>
+    </>
   );
 }
